@@ -12,7 +12,8 @@ import org.springframework.stereotype.Component;
 public class ClienteRepository {
   
   //Os objetos Cliente serão construídos e serão armazenados nessa lista (atributo clientes do tipo List)
-  public List<Cliente>clientes; 
+  private List<Cliente>clientes; 
+  private int nextId;
   //List é uma classe, mas é preciso importar = ctrl + '.' e import 'List'(java.util)
   //Pois para uma classe enxergar a outra é necessário importar (quando estão em pacotes(pastas) diferentes)
 
@@ -48,6 +49,7 @@ public class ClienteRepository {
     clientes.add(c1);
     clientes.add(c2);
     clientes.add(c3);
+    nextId = 4;
     //Arrays é uma classe utilitaria "java.util"
     //clientes = Arrays.asList(c1,c2,c3) -> Cria uma lista de tam fixo
     //Quando for salvar alguem nessa lista tem que usar esse formato
@@ -69,9 +71,21 @@ public class ClienteRepository {
     return null;
   }
   public Cliente salvar(Cliente cliente) {
-    cliente.setId(clientes.size() + 1); //será o cod do novo cliente
+    cliente.setId(nextId++); //será o cod do novo cliente
     clientes.add(cliente);
     return cliente;
   }
+public void remove(Cliente cli) {
+  clientes.remove(cli);
+}
+public Cliente update(Cliente cliente) {
+  Cliente aux = getClienteById(cliente.getId());
+  if(aux != null){
+    aux.setEndereco(cliente.getEndereco());
+    aux.setNome(cliente.getNome());
+    aux.setSaldo(cliente.getSaldo());
+  }
+  return aux;
+}
 }
 //Tudo que manipula a lista ficou aqui
